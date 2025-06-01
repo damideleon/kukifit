@@ -24,6 +24,7 @@
     </v-chip>
   </v-chip-group>
   <HorizontalScroll class="mt-3 ps-3 ps-md-6">
+    <div style="width: 12px"></div>
     <template v-for="item in products" :key="item.id">
       <v-card width="16rem" elevation="0">
         <v-img
@@ -51,6 +52,7 @@
         </v-card-text>
       </v-card>
     </template>
+    <div style="width: 12px"></div>
   </HorizontalScroll>
 </template>
 <script lang="ts" setup>

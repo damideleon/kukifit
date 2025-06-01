@@ -1,7 +1,7 @@
 <template>
   <v-app-bar color="primary" class="elevation-0" height="80">
     <template #append>
-      <v-menu>
+      <v-menu v-model="showCart">
         <template #activator="{ props }">
           <v-btn v-bind="props" icon>
             <v-badge
@@ -101,4 +101,17 @@ import { useCartStore } from "@/stores/CartStore";
 const route = useRouter();
 
 const { items, total } = storeToRefs(useCartStore());
+
+
+const showCart = ref(false);
+
+watch(() => items.value.size, () => {
+
+  showCart.value = true;
+
+  setTimeout(() => {
+    showCart.value = false;
+  }, 3000);
+
+});
 </script>

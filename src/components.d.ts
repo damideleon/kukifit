@@ -9,12 +9,19 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
+    BankTransferPayment: typeof import('./components/payment-methods/BankTransferPayment.vue')['default']
+    CardPayment: typeof import('./components/payment-methods/CardPayment.vue')['default']
+    CashPayment: typeof import('./components/payment-methods/CashPayment.vue')['default']
+    CopyableTextField: typeof import('./components/inputs/CopyableTextField.vue')['default']
+    ElectronicWalletPayment: typeof import('./components/payment-methods/ElectronicWalletPayment.vue')['default']
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     Home: typeof import('./components/Home.vue')['default']
     HomeView: typeof import('./components/HomeView.vue')['default']
     HorizontalScroll: typeof import('./components/HorizontalScroll.vue')['default']
     MainCarrousel: typeof import('./components/carrousel/MainCarrousel.vue')['default']
+    PaymentMethodSelector: typeof import('./components/payment-methods/PaymentMethodSelector.vue')['default']
     ProductsCarrousel: typeof import('./components/carrousel/ProductsCarrousel.vue')['default']
+    QrPayment: typeof import('./components/payment-methods/QrPayment.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
