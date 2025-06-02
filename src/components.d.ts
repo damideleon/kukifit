@@ -19,6 +19,7 @@ declare module 'vue' {
     HomeView: typeof import('./components/HomeView.vue')['default']
     HorizontalScroll: typeof import('./components/HorizontalScroll.vue')['default']
     MainCarrousel: typeof import('./components/carrousel/MainCarrousel.vue')['default']
+    MyAccountView: typeof import('./components/MyAccountView.vue')['default']
     PaymentMethodSelector: typeof import('./components/payment-methods/PaymentMethodSelector.vue')['default']
     ProductsCarrousel: typeof import('./components/carrousel/ProductsCarrousel.vue')['default']
     QrPayment: typeof import('./components/payment-methods/QrPayment.vue')['default']

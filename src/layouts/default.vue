@@ -60,7 +60,7 @@
         </template>
 
         <v-list>
-          <v-list-item prepend-icon="mdi-account">Mi cuenta</v-list-item>
+          <v-list-item prepend-icon="mdi-account" @click="route.push('/account')">Mi cuenta</v-list-item>
           <v-list-item prepend-icon="mdi-history">
             Pedidos realizados
             </v-list-item>
