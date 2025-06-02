@@ -325,23 +325,28 @@
 import { defineComponent, ref, reactive } from "vue";
 import { ReactiveLocalStorage } from "@/persistence/ReactiveLocalStorage";
 import { VForm } from "vuetify/components";
+import type { Address } from "@/data/model/Address"; // Import the Address interface
 
 // --- Interfaces ---
-interface Address {
-  id: string;
-  street: string;
-  city: string;
-  neighborhood: string;
-  placeReference: string;
-  label: string;
-}
+// interface Address { // Removed local definition
+//   id: string;
+//   street: string;
+//   city: string;
+//   neighborhood: string;
+//   placeReference: string;
+//   label: string;
+// }
 interface AddressFormData {
-  id?: string;
+  // Ensuring AddressFormData aligns with the imported Address + id is optional
+  id?: string; 
   street: string;
   city: string;
   neighborhood: string;
   placeReference: string;
   label: string;
+  state?: string; // Added to align if necessary, or keep specific to form
+  zipCode?: string; // Added to align if necessary
+  country?: string; // Added to align if necessary
 }
 interface BankAccount {
   id: string;

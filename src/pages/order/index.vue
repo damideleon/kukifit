@@ -1,7 +1,15 @@
 <template>
   <v-container class="pa-3">
     <h1>Pedido nuevo</h1>
-    <h2>Productos</h2>
+
+    <!-- Shipping Address Section -->
+    <h2 class="mt-6 mb-2">Dirección de Envío</h2>
+    <ShippingAddress v-if="displayAddress" :address="displayAddress" />
+    <v-alert v-else type="info" variant="tonal" class="mb-4">
+      No hay dirección de envío disponible. Por favor, agregue una en "Mi Cuenta".
+    </v-alert>
+
+    <h2 class="mt-6">Productos</h2>
     <v-list class="pa-0">
       <template v-for="[id, item] in order.items" :key="id">
         <v-divider></v-divider>
@@ -118,11 +126,30 @@ import {
 
 
 import { useCartStore } from "@/stores/CartStore";
+import { computed, watchEffect, ref } from "vue"; // Added watchEffect and ref (ref already present)
+import ShippingAddress from "@/components/ShippingAddress.vue"; // Added ShippingAddress component
+import { ReactiveLocalStorage } from "@/persistence/ReactiveLocalStorage"; // Added ReactiveLocalStorage
+import { useRouter } from "vue-router"; // Ensure useRouter is explicitly imported for clarity
+import type { Address } from "@/data/model/Address"; // Import the Address interface
+
+
+// Define the Address interface (copied from MyAccountView.vue for now)
+// interface Address { // Removed local definition
+//   id: string;
+//   street: string;
+//   city: string;
+//   state?: string; 
+//   zipCode?: string; 
+//   country?: string; 
+//   neighborhood: string; 
+//   placeReference: string; 
+//   label: string; 
+// }
 
 const orderDeliverySelection = ref("delivery");
 const payMethodSelection = ref("cash");
 
-const router = useRouter();
+const router = useRouter(); // Instance already created
 
 const orderDeliveryModes = [
   {
@@ -202,7 +229,7 @@ const bankAccountPaymentMethod: BankTransferPaymentMethod = {
 const paymentMethods = [cashPaymentMethod, bankAccountPaymentMethod];
 
 const moneySubmit = ref("0");
-const moneyDisplay = ref("0");
+// const moneyDisplay = ref("0"); // moneyDisplay seems unused, commented out. If needed, please uncomment.
 function onUpdateMoney(value: string) {
   const cleanValue = value.replace(/[^0-9]/g, "");
   if (cleanValue === "") {
@@ -214,4 +241,46 @@ function onUpdateMoney(value: string) {
 }
 
 const order = useCartStore();
+
+// Shipping Address Logic
+const shippingAddressesStorage = new ReactiveLocalStorage<Address[]>(
+  "shippingAddresses",
+  []
+);
+const shippingAddresses = shippingAddressesStorage.state;
+
+const displayAddress = computed(() => {
+  if (shippingAddresses.value && shippingAddresses.value.length > 0) {
+    const firstAddress = shippingAddresses.value[0];
+    // Map data to what ShippingAddress.vue component expects.
+    const firstAddressTyped = firstAddress as Address; // Ensure type for autocompletion
+    return {
+      street: firstAddressTyped.street,
+      city: firstAddressTyped.city,
+      state: firstAddressTyped.state || 'N/A', 
+      zipCode: firstAddressTyped.zipCode || 'N/A', 
+      country: firstAddressTyped.country || 'Paraguay', 
+      label: firstAddressTyped.label, // Pass label
+      neighborhood: firstAddressTyped.neighborhood, // Pass neighborhood
+      placeReference: firstAddressTyped.placeReference, // Pass placeReference
+    };
+  }
+  return null;
+});
+
+// Watch for changes in shipping addresses and redirect if none are available
+watchEffect(() => {
+  // Check if shippingAddresses has been initialized and is empty
+  // ReactiveLocalStorage initializes with default [] if nothing is in localStorage
+  if (shippingAddresses.value && shippingAddresses.value.length === 0) {
+    // Small delay to allow UI to update before redirecting, preventing flash of "no address" message
+    // This might not be strictly necessary depending on UX preference
+    setTimeout(() => {
+        if (shippingAddresses.value.length === 0) { // Double check after timeout
+            router.push('/account'); 
+        }
+    }, 100); // 100ms delay, adjust as needed or remove
+  }
+});
+
 </script>
