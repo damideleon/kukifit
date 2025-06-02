@@ -18,6 +18,8 @@
       />
     </a>
 
+    <router-link to="/account" class="text-caption text-decoration-none on-surface mx-2">My Account</router-link>
+
     <div
       class="text-caption text-disabled"
       style="position: absolute; right: 16px;"
